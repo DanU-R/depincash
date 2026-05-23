@@ -63,3 +63,14 @@ export function decryptWalletPk(w: WalletItem): string {
   if (!w.private_key_enc) throw new Error('No private key stored')
   return decryptText(w.private_key_enc)
 }
+
+export async function deleteWallets(labels: string[]) {
+  const wallets = await getWallets()
+  const keep = wallets.filter(w => !labels.includes(w.label))
+  await saveWallets(keep)
+  return keep
+}
+
+export async function deleteAllWallets() {
+  await saveWallets([])
+}
