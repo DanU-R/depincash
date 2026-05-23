@@ -1,6 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-import bcrypt from 'bcryptjs'
 
 const COOKIE = 'dz_session'
 
@@ -12,8 +11,8 @@ function secret() {
 
 export async function verifyLogin(user: string, pass: string) {
   if (user !== process.env.ADMIN_USER) return false
-  const hash = process.env.ADMIN_PASS_HASH || ''
-  return bcrypt.compare(pass, hash)
+  const password = process.env.ADMIN_PASSWORD || ''
+  return password.length > 0 && pass === password
 }
 
 export async function createSession(user: string) {
